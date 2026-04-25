@@ -8,15 +8,17 @@ set -euo pipefail
 # How this works: 
 # 1. go to whatever folder you want and run the backup command
 # 2. it will create a zip file in your folder of choice based on the folder name you have and what you give it
-# 3. -i means keep images. -r means write a note and timestamp to a backup log file
+# NOTE: -i means keep images. -r means write a note and timestamp to a backup log file
+# NOTE: if the string is not given, the code will ask. it's used when saving the filename
 #
 # Usage: 
 #    cd "some folder"
-#    ~/backup.sh -i -r "This is a backup name"
-#    # result:    ~/some_folder_This_is_a_backup_name"
+#    ~/backup.sh -i -r "this is a backup name"
+#    # result:    ~/some_folder_this_is_a_backup_name.zip"
 # ========================
 
 # ========================
+# target should end with '/'
 target="$HOME/"
 log_file="$HOME/backup-runs.log"
 log_title="Code Backed Up"
@@ -45,7 +47,7 @@ desc="${desc:-manual}"
 desc="${desc// /-}"
 
 project_name="$(basename "$PWD")"
-outfile="${target}_${project_name}_${desc}.zip"
+outfile="${target}${project_name}_${desc}.zip"
 
 
 if [ "$include_images" = true ]; then
