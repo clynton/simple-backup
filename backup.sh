@@ -34,9 +34,9 @@ outfile="${target}_${project_name}_${desc}.zip"
 
 
 if [ "$include_images" = true ]; then
-  zip -r "$outfile" . -x "node_modules/*" ".git/*" ".husky/*" ".next/*" ".env*" "*.woff" "*.ttf" "*.pdf" "*.otf" "*.zip" "venv/*" "*.csv"
+  zip -r "$outfile" . -x "*/node_modules/*" "*/.git/*" "*/.husky/*" "*/.next/*" ".env*" "*.woff" "*.ttf" "*.pdf" "*.otf" "*.zip" "*/venv/*" "*.csv"
 else
-  zip -r "$outfile" . -x "node_modules/*" ".git/*" ".husky/*" ".next/*" ".env*" "*.woff" "*.ttf" "*.pdf" "*.otf" "*.zip" "venv/*" "*.csv" "*.png" "*.jpeg"
+  zip -r "$outfile" . -x "*/node_modules/*" "*/.git/*" "*/.husky/*" "*/.next/*" ".env*" "*.woff" "*.ttf" "*.pdf" "*.otf" "*.zip" "*/venv/*" "*.csv" "*.png" "*.jpeg"
 fi
 
 
