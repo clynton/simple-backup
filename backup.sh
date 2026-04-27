@@ -20,8 +20,16 @@ set -euo pipefail
 # ========================
 # target should end with '/'
 target="$HOME/"
+# set if you're gonna use backups notes. ex: log_file="$HOME/_DEPLOYMENTS_AND_BACKUPS.log"
 log_file="$HOME/backup-runs.log"
 log_title="Code Backed Up"
+# add more folder names or extensions if desired
+exclude_names=(node_modules .git .husky .next venv .vercel)
+exclude_exts=(woff ttf pdf otf zip csv)
+# use -i to keep or no -i to skip images
+exclude_image_exts=(png jpeg jpg)
+# other patterns
+exclude_file_patterns=('.env*')
 # ========================
 
 record=false
@@ -49,13 +57,16 @@ desc="${desc// /-}"
 project_name="$(basename "$PWD")"
 outfile="${target}${project_name}_${desc}.zip"
 
-
-if [ "$include_images" = true ]; then
-  zip -r "$outfile" . -x "*/node_modules/*" "*/.git/*" "*/.husky/*" "*/.next/*" ".env*" "*.woff" "*.ttf" "*.pdf" "*.otf" "*.zip" "*/venv/*" "*.csv"
-else
-  zip -r "$outfile" . -x "*/node_modules/*" "*/.git/*" "*/.husky/*" "*/.next/*" ".env*" "*.woff" "*.ttf" "*.pdf" "*.otf" "*.zip" "*/venv/*" "*.csv" "*.png" "*.jpeg"
-fi
-
+#=====================================================================
+[ "$include_images" != true ] && exclude_exts+=("${exclude_image_exts[@]}")
+#-------
+excludes=()
+for name in "${exclude_names[@]}"; do excludes+=("$name/*" "*/$name/*"); done
+for pat in "${exclude_file_patterns[@]}"; do excludes+=("$pat" "*/$pat"); done
+for ext in "${exclude_exts[@]}"; do excludes+=("*.$ext"); done
+#-------
+zip -r "$outfile" . -x "${excludes[@]}"
+#=====================================================================
 
 if [ "$record" = true ]; then
   echo "$(date -u '+%Y-%m-%dT%H:%M:%SZ') $log_title | $desc" >> "$log_file"
