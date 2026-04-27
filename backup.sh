@@ -11,6 +11,10 @@ set -euo pipefail
 # NOTE: -i means keep images. -r means write a note and timestamp to a backup log file
 # NOTE: if the string is not given, the code will ask. it's used when saving the filename
 #
+# Install
+#       1. place into your home folder and make executable: ex - run this command: chmod +x ~/backup.sh
+#       2. edit the lines below to say where backups & logs should go and edit the excluded folders/files below.
+#
 # Usage: 
 #    cd "some folder"
 #    ~/backup.sh -i -r "this is a backup name"
